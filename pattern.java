@@ -1,3 +1,5 @@
+import java.beans.Encoder;
+
 import adapter.cleanup;
 import adapter.e110v;
 import adapter.socketadapter;
@@ -6,17 +8,24 @@ import decorator.a3;
 import decorator.a4;
 import decorator.audi;
 import decorator.icar;
+import observer.button;
+import observer.ilistener;
 import proxy.chrome;
 import proxy.ibrowser;
 import proxy.whail;
 import singleton.aclazz;
 import singleton.bclazz;
 import singleton.socket;
+import strategy.Encod;
+import strategy.base64;
+import strategy.iencoding;
+import strategy.normal;
 
 public class pattern {
     
     public static void main(String[] args) {
         System.out.println("main");
+        
         System.out.println("싱글톤");
         
         aclazz aclazz=new aclazz();
@@ -67,6 +76,36 @@ public class pattern {
         a4.show();
         System.out.println("=========================");
         ///////decorater패턴
+
+        System.out.println("observer패턴");
+        button button=new button("버튼");
+        button.addlistener(new ilistener(){
+            @Override
+            public void clicklistener(String event) {
+                System.out.println(event);
+            }
+        });
+        button.click("1");
+        button.click("2");
+        button.click("3");
+        System.out.println("=========================");
+        ///////observer패턴
+
+        System.out.println("strategy패턴");
+
+       Encod encod=new Encod();
+        iencoding base=new base64();
+        iencoding noaml=new normal();
+
+        String code="hello";
+        
+        encod.setEncod(base);
+        String ou=encod.getmessege(code);
+        System.out.println("base"+ou);
+
+        encod.setEncod(noaml);
+        String ou2=encod.getmessege(code);
+        System.out.println("noaml"+ou2);
 
     }
     public static void connect(e110v e110v) {
